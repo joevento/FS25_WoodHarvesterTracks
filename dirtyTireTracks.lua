@@ -291,6 +291,7 @@ function DirtyTireTracks:onUpdate(dt)
 							if isServer then
 								local realArea, area = FSDensityMapUtil.updateCultivatorArea(x0, z0, x1, z1, x2, z2, true, true, nil, nil)
 								if realArea ~= nil and realArea ~= 0 then
+									FSDensityMapUtil.clearDecoArea(x0, z0, x1, z1, x2, z2)
 									anyActive = true
 								end
 							end
