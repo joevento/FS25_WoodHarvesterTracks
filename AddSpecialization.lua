@@ -51,7 +51,7 @@ function AddSpecialization:loadModDesc()
 					className 		 = className,
 					filename 		 = filename,
 					l10nNameTag 	 = l10nNameTag,
-					debug 	 		 = Utils.getNoNil(getXMLBool(xmlFile, key .. "#debug"), false),
+					debug 	 		 = Utils.getNoNil(getXMLBool(xmlFile, key .. "debug"), false),
 					vehicleTypeLimit = AddSpecialization:loadSearchType(xmlFile, key, "vehicleTypeLimit", getXMLBool),
 					restrictions	 = AddSpecialization:loadSearchType(xmlFile, key, "restrictions", 	getXMLInt),
 					searchWords		 = AddSpecialization:loadSearchType(xmlFile, key, "searchWords", 		getXMLInt)

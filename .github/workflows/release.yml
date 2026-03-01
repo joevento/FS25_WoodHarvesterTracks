@@ -35,7 +35,7 @@ jobs:
       - name: Create Zip Archive
         if: steps.check_version.outputs.changed == 'true'
         run: |
-          zip -r FS25_DirtyTireTracks.zip dirtyTiretracks.lua AddSpecialization.lua modDesc.xml icon_dirtyTireTracks.dds
+          zip -r FS25_DirtyTireTracks.zip dirtyTireTracks.lua AddSpecialization.lua modDesc.xml icon_dirtyTireTracks.dds
           
       - name: Create GitHub Release
         if: steps.check_version.outputs.changed == 'true'
