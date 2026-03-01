@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="105">
+	<author>kenny456, DiscoFlower8890</author>
+	<contributors>Xentro, Piplarsson</contributors>
+	<version>1.0.1.0</version>
+	<title>
+		<en>Dirty Tire Tracks</en>
+	</title>
+	<description>
+        <en>
+<![CDATA[
+This mod adds extra tyre tracks to vehicles for more realistic behaviour in forested areas. It was originally created for heavy tracked machines, but the functionality has been extended to all wheeled and tracked vehicles.
+
+The mod is enabled globally, but disabled per vehicle by default.
+
+All credit goes to kenny456 for the original mod; I (DiscoFlower8890) only converted it to work with the latest version of the game.
+
+Features:
+- Enable/disable the mod for the current vehicle (the setting is saved to the config file and applies across all savegames)
+- Enable/disable the mod globally for all vehicles
+- Only administrators can change global settings in multiplayer
+- All controls can be remapped in Input Bindings
+
+Default controls:
+- Left Alt + T — Toggle mod for current vehicle
+- Left Ctrl + T — Toggle mod globally for all vehicles
+
+For bugs or other issues, message me on Discord: <@412286849122435083>
+]]>
+        </en>
+	</description>
+	<iconFilename>icon_dirtyTireTracks.dds</iconFilename>
+	<multiplayer supported="true"/>
+	<extraSourceFiles>
+		<sourceFile filename="AddSpecialization.lua" />
+	</extraSourceFiles>	
+	<addSpecialization>
+		<specialization name="DirtyTireTracks" className="DirtyTireTracks" filename="dirtyTireTracks.lua" debug="false">
+			<restrictions 	  state="0" name="drivable" />
+			<restrictions 	  state="0" name="enterable" />
+			<restrictions 	  state="0" name="wheels" />
+			<restrictions 	  state="2" name="crawlers" />
+			<restrictions 	  state="1" name="locomotive" />
+			<restrictions 	  state="1" name="trainTrailer" />
+			<restrictions 	  state="1" name="trainTimberTrailer" />
+			<restrictions 	  state="1" name="crane" />
+		</specialization>
+	</addSpecialization>	
+	<l10n>
+		<text name="input_DIRTYTIRETRACK_ACTIVATE">
+			<en>Dirty Tire Tracks: Activate / deactivate</en>
+			<de>Dirty Tire Tracks: Aktivieren / Deaktivieren</de>
+			<sv>Dirty Tire Tracks: Aktivera / Avaktivera</sv>
+		</text>
+		<text name="input_DIRTYTIRETRACK_ACTIVATE_ALL">
+			<en>Dirty Tire Tracks: Activate / deactivate for all vehicles</en>
+			<de>Dirty Tire Tracks: Für alle Fahrzeuge aktivieren / deaktivieren</de>
+			<sv>Dirty Tire Tracks: Aktivera / Avaktivera på alla fordon</sv>
+		</text>
+		<text name="DIRTYTIRETRACK_ACTIVATE">
+			<en>Dirty Tire Tracks: Turn on</en>
+			<de>Dirty Tire Tracks: Anschalten</de>
+			<sv>Dirty Tire Tracks: Aktivera</sv>
+		</text>
+		<text name="DIRTYTIRETRACK_DEACTIVATE">
+			<en>Dirty Tire Tracks: Turn off</en>
+			<de>Dirty Tire Tracks: Ausschalten</de>
+			<sv>Dirty Tire Tracks: Stäng av</sv>
+		</text>
+		<text name="DIRTYTIRETRACK_ACTIVATE_ALL">
+			<en>Dirty Tire Tracks: Turn on for all vehicles</en>
+			<de>Dirty Tire Tracks: Für alle Fahrzeuge einschalten</de>
+			<sv>Dirty Tire Tracks: Aktivera på alla fordon</sv>
+		</text>
+		<text name="DIRTYTIRETRACK_DEACTIVATE_ALL">
+			<en>Dirty Tire Tracks: Turn off for all vehicles</en>
+			<de>Dirty Tire Tracks: Für alle Fahrzeuge ausschalten</de>
+			<sv>Dirty Tire Tracks: Stäng av på alla fordon</sv>
+		</text>
+	</l10n>
+	<actions>
+		<action name="DIRTYTIRETRACK_ACTIVATE" category="VEHICLE"   axisType="HALF" ignoreComboMask="false"/>
+		<action name="DIRTYTIRETRACK_ACTIVATE_ALL" category="VEHICLE"   axisType="HALF" ignoreComboMask="false"/>
+    </actions>
+    <inputBinding>
+		<actionBinding action="DIRTYTIRETRACK_ACTIVATE" >
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_lalt KEY_t" />
+        </actionBinding>
+		<actionBinding action="DIRTYTIRETRACK_ACTIVATE_ALL" >
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_t" />
+        </actionBinding>
+    </inputBinding>
+</modDesc>
