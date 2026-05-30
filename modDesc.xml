@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="105">
 	<author>kenny456, DiscoFlower8890</author>
-	<contributors>Xentro, Piplarsson</contributors>
-	<version>1.0.2.0</version>
+	<version>1.0.3.0</version>
 	<title>
-		<en>Dirty Tire Tracks</en>
+		<en>Wood Harvester Tracks</en>
 	</title>
 	<description>
         <en>
@@ -29,13 +28,13 @@ For bugs or other issues, message me on Discord: <@412286849122435083>
 ]]>
         </en>
 	</description>
-	<iconFilename>icon_dirtyTireTracks.dds</iconFilename>
+	<iconFilename>icon_woodHarvesterTracks.dds</iconFilename>
 	<multiplayer supported="true"/>
 	<extraSourceFiles>
 		<sourceFile filename="AddSpecialization.lua" />
 	</extraSourceFiles>	
 	<addSpecialization>
-		<specialization name="DirtyTireTracks" className="DirtyTireTracks" filename="dirtyTireTracks.lua" debug="false">
+		<specialization name="WoodHarvesterTracks" className="WoodHarvesterTracks" filename="woodHarvesterTracks.lua" debug="false">
 			<restrictions 	  state="0" name="drivable" />
 			<restrictions 	  state="0" name="enterable" />
 			<restrictions 	  state="0" name="wheels" />
@@ -47,46 +46,46 @@ For bugs or other issues, message me on Discord: <@412286849122435083>
 		</specialization>
 	</addSpecialization>	
 	<l10n>
-		<text name="input_DIRTYTIRETRACK_ACTIVATE">
-			<en>Dirty Tire Tracks: Activate / deactivate</en>
-			<de>Dirty Tire Tracks: Aktivieren / Deaktivieren</de>
-			<sv>Dirty Tire Tracks: Aktivera / Avaktivera</sv>
+		<text name="input_WOODHARVESTERTRACK_ACTIVATE">
+			<en>Wood Harvester Tracks: Activate / deactivate</en>
+			<de>Wood Harvester Tracks: Aktivieren / Deaktivieren</de>
+			<sv>Wood Harvester Tracks: Aktivera / Avaktivera</sv>
 		</text>
-		<text name="input_DIRTYTIRETRACK_ACTIVATE_ALL">
-			<en>Dirty Tire Tracks: Activate / deactivate for all vehicles</en>
-			<de>Dirty Tire Tracks: Für alle Fahrzeuge aktivieren / deaktivieren</de>
-			<sv>Dirty Tire Tracks: Aktivera / Avaktivera på alla fordon</sv>
+		<text name="input_WOODHARVESTERTRACK_ACTIVATE_ALL">
+			<en>Wood Harvester Tracks: Activate / deactivate for all vehicles</en>
+			<de>Wood Harvester Tracks: Für alle Fahrzeuge aktivieren / deaktivieren</de>
+			<sv>Wood Harvester Tracks: Aktivera / Avaktivera på alla fordon</sv>
 		</text>
-		<text name="DIRTYTIRETRACK_ACTIVATE">
-			<en>Dirty Tire Tracks: Turn on</en>
-			<de>Dirty Tire Tracks: Anschalten</de>
-			<sv>Dirty Tire Tracks: Aktivera</sv>
+		<text name="WOODHARVESTERTRACK_ACTIVATE">
+			<en>Wood Harvester Tracks: Turn on</en>
+			<de>Wood Harvester Tracks: Anschalten</de>
+			<sv>Wood Harvester Tracks: Aktivera</sv>
 		</text>
-		<text name="DIRTYTIRETRACK_DEACTIVATE">
-			<en>Dirty Tire Tracks: Turn off</en>
-			<de>Dirty Tire Tracks: Ausschalten</de>
-			<sv>Dirty Tire Tracks: Stäng av</sv>
+		<text name="WOODHARVESTERTRACK_DEACTIVATE">
+			<en>Wood Harvester Tracks: Turn off</en>
+			<de>Wood Harvester Tracks: Ausschalten</de>
+			<sv>Wood Harvester Tracks: Stäng av</sv>
 		</text>
-		<text name="DIRTYTIRETRACK_ACTIVATE_ALL">
-			<en>Dirty Tire Tracks: Turn on for all vehicles</en>
-			<de>Dirty Tire Tracks: Für alle Fahrzeuge einschalten</de>
-			<sv>Dirty Tire Tracks: Aktivera på alla fordon</sv>
+		<text name="WOODHARVESTERTRACK_ACTIVATE_ALL">
+			<en>Wood Harvester Tracks: Turn on for all vehicles</en>
+			<de>Wood Harvester Tracks: Für alle Fahrzeuge einschalten</de>
+			<sv>Wood Harvester Tracks: Aktivera på alla fordon</sv>
 		</text>
-		<text name="DIRTYTIRETRACK_DEACTIVATE_ALL">
-			<en>Dirty Tire Tracks: Turn off for all vehicles</en>
-			<de>Dirty Tire Tracks: Für alle Fahrzeuge ausschalten</de>
-			<sv>Dirty Tire Tracks: Stäng av på alla fordon</sv>
+		<text name="WOODHARVESTERTRACK_DEACTIVATE_ALL">
+			<en>Wood Harvester Tracks: Turn off for all vehicles</en>
+			<de>Wood Harvester Tracks: Für alle Fahrzeuge ausschalten</de>
+			<sv>Wood Harvester Tracks: Stäng av på alla fordon</sv>
 		</text>
 	</l10n>
 	<actions>
-		<action name="DIRTYTIRETRACK_ACTIVATE" category="VEHICLE"   axisType="HALF" ignoreComboMask="false"/>
-		<action name="DIRTYTIRETRACK_ACTIVATE_ALL" category="VEHICLE"   axisType="HALF" ignoreComboMask="false"/>
+		<action name="WOODHARVESTERTRACK_ACTIVATE" category="VEHICLE"   axisType="HALF" ignoreComboMask="false"/>
+		<action name="WOODHARVESTERTRACK_ACTIVATE_ALL" category="VEHICLE"   axisType="HALF" ignoreComboMask="false"/>
     </actions>
     <inputBinding>
-		<actionBinding action="DIRTYTIRETRACK_ACTIVATE" >
+		<actionBinding action="WOODHARVESTERTRACK_ACTIVATE" >
             <binding device="KB_MOUSE_DEFAULT" input="KEY_lalt KEY_t" />
         </actionBinding>
-		<actionBinding action="DIRTYTIRETRACK_ACTIVATE_ALL" >
+		<actionBinding action="WOODHARVESTERTRACK_ACTIVATE_ALL" >
             <binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_t" />
         </actionBinding>
     </inputBinding>

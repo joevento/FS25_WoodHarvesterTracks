@@ -1,5 +1,5 @@
-# Dirty Tire Tracks Mod
-<i>Current version 1.0.2.0</i>
+# Wood Harvester Tracks Mod
+<i>Current version 1.0.3.0</i>
 
 This mod adds extra tyre tracks to vehicles for more realistic behaviour in forested areas. It was originally created for heavy tracked machines, but the functionality has been extended to all wheeled and tracked vehicles.
 
@@ -19,4 +19,4 @@ Default controls:
 
 <br /><br /><br />
 ### Use following page to post bug reports: 
-https://github.com/joevento/FS25_DirtyTireTracks/issues
+https://github.com/joevento/FS25_WoodHarvesterTracks/issues

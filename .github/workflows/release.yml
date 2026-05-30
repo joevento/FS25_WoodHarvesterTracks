@@ -35,7 +35,7 @@ jobs:
       - name: Create Zip Archive
         if: steps.check_version.outputs.changed == 'true'
         run: |
-          zip -r FS25_DirtyTireTracks.zip dirtyTireTracks.lua AddSpecialization.lua modDesc.xml icon_dirtyTireTracks.dds
+          zip -r FS25_WoodHarvesterTracks.zip woodHarvesterTracks.lua AddSpecialization.lua modDesc.xml icon_woodHarvesterTracks.dds
           
       - name: Create GitHub Release
         if: steps.check_version.outputs.changed == 'true'
@@ -43,5 +43,5 @@ jobs:
         with:
           tag_name: v${{ steps.check_version.outputs.version }}
           name: Release ${{ steps.check_version.outputs.version }}
-          files: FS25_DirtyTireTracks.zip
+          files: FS25_WoodHarvesterTracks.zip
           generate_release_notes: true

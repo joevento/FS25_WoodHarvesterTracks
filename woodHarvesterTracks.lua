@@ -1,36 +1,36 @@
 --
--- Dirty Tire Tracks for FS19
+-- Wood Harvester Tracks for FS19
 -- @author:    	kenny456 (kenny456@seznam.cz)
 -- @history:	v1.0.0.0 - 2020-08-31 - first release
 --
-DirtyTireTracks = {}
-DirtyTireTracks.confDir = getUserProfileAppPath().. "modSettings/FS25_DirtyTireTracks/"
-DirtyTireTracks.modDirectory = g_currentModDirectory
+WoodHarvesterTracks = {}
+WoodHarvesterTracks.confDir = getUserProfileAppPath().. "modSettings/FS25_WoodHarvesterTracks/"
+WoodHarvesterTracks.modDirectory = g_currentModDirectory
 
-function DirtyTireTracks.prerequisitesPresent(specializations)
+function WoodHarvesterTracks.prerequisitesPresent(specializations)
 	return true
 end
-function DirtyTireTracks.registerOverwrittenFunctions(vehicleType)
+function WoodHarvesterTracks.registerOverwrittenFunctions(vehicleType)
 end
 
-function DirtyTireTracks.registerFunctions(vehicleType)
-	SpecializationUtil.registerFunction(vehicleType, "groundRaycastCallbackNew", 			DirtyTireTracks.groundRaycastCallbackNew)
-	SpecializationUtil.registerFunction(vehicleType, "toggleActiveDirtyTireTracks", 		DirtyTireTracks.toggleActiveDirtyTireTracks)
-	SpecializationUtil.registerFunction(vehicleType, "getHasDttImplement", 					DirtyTireTracks.getHasDttImplement)
-	SpecializationUtil.registerFunction(vehicleType, "activateDttMod", 						DirtyTireTracks.activateDttMod)
-	SpecializationUtil.registerFunction(vehicleType, "saveToXmlDirtyTireTracks", 				DirtyTireTracks.saveToXmlDirtyTireTracks)
-	SpecializationUtil.registerFunction(vehicleType, "loadFromXmlDirtyTireTracks", 			DirtyTireTracks.loadFromXmlDirtyTireTracks)
+function WoodHarvesterTracks.registerFunctions(vehicleType)
+	SpecializationUtil.registerFunction(vehicleType, "groundRaycastCallbackNew", 			WoodHarvesterTracks.groundRaycastCallbackNew)
+	SpecializationUtil.registerFunction(vehicleType, "toggleActiveWoodHarvesterTracks", 		WoodHarvesterTracks.toggleActiveWoodHarvesterTracks)
+	SpecializationUtil.registerFunction(vehicleType, "getHasDttImplement", 					WoodHarvesterTracks.getHasDttImplement)
+	SpecializationUtil.registerFunction(vehicleType, "activateDttMod", 						WoodHarvesterTracks.activateDttMod)
+	SpecializationUtil.registerFunction(vehicleType, "saveToXmlWoodHarvesterTracks", 				WoodHarvesterTracks.saveToXmlWoodHarvesterTracks)
+	SpecializationUtil.registerFunction(vehicleType, "loadFromXmlWoodHarvesterTracks", 			WoodHarvesterTracks.loadFromXmlWoodHarvesterTracks)
 end
-function DirtyTireTracks:onRegisterActionEvents(isSelected, isOnActiveVehicle)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:onRegisterActionEvents(isSelected, isOnActiveVehicle)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
 	
-	self:loadFromXmlDirtyTireTracks(self:getFullName())
+	self:loadFromXmlWoodHarvesterTracks(self:getFullName())
 	
 	if self.isServer then
-		self:toggleActiveDirtyTireTracks(spec.modActive, DirtyTireTracks.modActive, false)
+		self:toggleActiveWoodHarvesterTracks(spec.modActive, WoodHarvesterTracks.modActive, false)
 	end
 	if g_dedicatedServerInfo ~= nil then
 		return
@@ -39,10 +39,10 @@ function DirtyTireTracks:onRegisterActionEvents(isSelected, isOnActiveVehicle)
 		spec.event_IDs = {}
 	end
 	if self:getIsActive() and (self:getIsActiveForInput() or not self:getHasDttImplement()) then
-		local actions = { InputAction.DIRTYTIRETRACK_ACTIVATE, InputAction.DIRTYTIRETRACK_ACTIVATE_ALL }
+		local actions = { InputAction.WOODHARVESTERTRACK_ACTIVATE, InputAction.WOODHARVESTERTRACK_ACTIVATE_ALL }
 		for _,actionName in pairs(actions) do
 			local always = false
-			local _, eventID = g_inputBinding:registerActionEvent(actionName, self, DirtyTireTracks.actionCallback, true, true, always, true)
+			local _, eventID = g_inputBinding:registerActionEvent(actionName, self, WoodHarvesterTracks.actionCallback, true, true, always, true)
 			spec.event_IDs[actionName] = eventID
 			if g_inputBinding ~= nil and g_inputBinding.events ~= nil and g_inputBinding.events[eventID] ~= nil then
 				if actionName == 'something with lower priority' then
@@ -50,33 +50,33 @@ function DirtyTireTracks:onRegisterActionEvents(isSelected, isOnActiveVehicle)
 				else
 					g_inputBinding:setActionEventTextPriority(eventID, GS_PRIO_VERY_HIGH)
 				end
-				g_inputBinding:setActionEventTextVisibility(eventID, DirtyTireTracks.showHelp)
+				g_inputBinding:setActionEventTextVisibility(eventID, WoodHarvesterTracks.showHelp)
 			end
 			local colliding = false
 			_, colliding, _ = g_inputBinding:checkEventCollision(actionName)
 			if colliding then
 				if g_inputBinding.nameActions[actionName].bindings[1] ~= nil then
 					if g_inputBinding.nameActions[actionName].bindings[1].inputString ~= nil then
-						print(string.format('Warning: DirtyTireTracks got a colliding input action: %s', actionName)..' ('..g_inputBinding.nameActions[actionName].bindings[1].inputString..'). You can remap it in controls settings')
+						print(string.format('Warning: WoodHarvesterTracks got a colliding input action: %s', actionName)..' ('..g_inputBinding.nameActions[actionName].bindings[1].inputString..'). You can remap it in controls settings')
 					end
 				else
-					print(string.format('Warning: DirtyTireTracks got a colliding input action: %s', actionName))
+					print(string.format('Warning: WoodHarvesterTracks got a colliding input action: %s', actionName))
 				end
 			end
 		end
 	end
 end
-function DirtyTireTracks.registerEventListeners(vehicleType)
-	for _,n in pairs( { "onLoad", "onPostLoad", "onUpdate", "onRegisterActionEvents", "toggleActiveDirtyTireTracks", "activateDttMod", "onReadStream", "onWriteStream", "saveToXmlDirtyTireTracks", "loadFromXmlDirtyTireTracks"} ) do
-		SpecializationUtil.registerEventListener(vehicleType, n, DirtyTireTracks)
+function WoodHarvesterTracks.registerEventListeners(vehicleType)
+	for _,n in pairs( { "onLoad", "onPostLoad", "onUpdate", "onRegisterActionEvents", "toggleActiveWoodHarvesterTracks", "activateDttMod", "onReadStream", "onWriteStream", "saveToXmlWoodHarvesterTracks", "loadFromXmlWoodHarvesterTracks"} ) do
+		SpecializationUtil.registerEventListener(vehicleType, n, WoodHarvesterTracks)
 	end
 end
-function DirtyTireTracks:onLoad(savegame)
-	self.spec_dirtyTireTracks = {}
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:onLoad(savegame)
+	self.spec_woodHarvesterTracks = {}
+	local spec = self.spec_woodHarvesterTracks
 	
-	DirtyTireTracks.showHelp = true
-	DirtyTireTracks.modActive = true
+	WoodHarvesterTracks.showHelp = true
+	WoodHarvesterTracks.modActive = true
 	spec.event_IDs = {}
 	spec.modInitialized = false
 	spec.modAllowed = false
@@ -89,7 +89,7 @@ function DirtyTireTracks:onLoad(savegame)
 		spec.modInitialized = true
 	end
 	if not spec.modInitialized then
-		print("Error: DirtyTireTracks initialization failed for "..tostring(self:getFullName()).." !")
+		print("Error: WoodHarvesterTracks initialization failed for "..tostring(self:getFullName()).." !")
 		return
 	end
 	local hasTireTracks = false
@@ -113,18 +113,18 @@ function DirtyTireTracks:onLoad(savegame)
 	end
 	spec.timer = 0
 	
-	local configFile = DirtyTireTracks.confDir .. "DirtyTireTracksConfig.xml"
+	local configFile = WoodHarvesterTracks.confDir .. "WoodHarvesterTracksConfig.xml"
 	if fileExists(configFile) then
-		self:loadFromXmlDirtyTireTracks(self:getFullName())
+		self:loadFromXmlWoodHarvesterTracks(self:getFullName())
 	else
 		createFolder(getUserProfileAppPath().. "modSettings/")
-		createFolder(DirtyTireTracks.confDir)
-		DirtyTireTracks.configXml = createXMLFile("DirtyTireTracks_XML", configFile, "DirtyTireTracksConfig")
-		self:saveToXmlDirtyTireTracks()
+		createFolder(WoodHarvesterTracks.confDir)
+		WoodHarvesterTracks.configXml = createXMLFile("WoodHarvesterTracks_XML", configFile, "WoodHarvesterTracksConfig")
+		self:saveToXmlWoodHarvesterTracks()
 	end
 end
-function DirtyTireTracks:onPostLoad(savegame)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:onPostLoad(savegame)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
@@ -141,39 +141,39 @@ function DirtyTireTracks:onPostLoad(savegame)
 		end
 	end
 end
-function DirtyTireTracks:saveToXMLFile(xmlFile, key)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:saveToXMLFile(xmlFile, key)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
 end
-function DirtyTireTracks:onDelete()
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:onDelete()
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
 end
-function DirtyTireTracks:loadFromXmlDirtyTireTracks(vehicle)
-	local spec = self.spec_dirtyTireTracks
-	local configFile = DirtyTireTracks.confDir .. "DirtyTireTracksConfig.xml"
+function WoodHarvesterTracks:loadFromXmlWoodHarvesterTracks(vehicle)
+	local spec = self.spec_woodHarvesterTracks
+	local configFile = WoodHarvesterTracks.confDir .. "WoodHarvesterTracksConfig.xml"
 	if fileExists(configFile) then
-		DirtyTireTracks.configXml = loadXMLFile("DirtyTireTracks_XML", configFile)
+		WoodHarvesterTracks.configXml = loadXMLFile("WoodHarvesterTracks_XML", configFile)
 	end
 	if self.isServer and fileExists(configFile) then
-		if getXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.showHelp") ~= nil then
-			DirtyTireTracks.showHelp = getXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.showHelp")
+		if getXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.showHelp") ~= nil then
+			WoodHarvesterTracks.showHelp = getXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.showHelp")
 		end;
-		if getXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.modActiveGlobal") ~= nil then
-			DirtyTireTracks.modActive = getXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.modActiveGlobal")
+		if getXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.modActiveGlobal") ~= nil then
+			WoodHarvesterTracks.modActive = getXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.modActiveGlobal")
 		end
 		if vehicle ~= nil then
-			local key = "DirtyTireTracksConfig.dttActiveVehicles"
+			local key = "WoodHarvesterTracksConfig.dttActiveVehicles"
 			local i = 0
 			while true do
-				local name = getXMLString(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name")
+				local name = getXMLString(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name")
 				if name ~= nil then
 					if name == vehicle then
-						spec.modActive = getXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i))
+						spec.modActive = getXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i))
 						break
 					end
 				else
@@ -184,57 +184,57 @@ function DirtyTireTracks:loadFromXmlDirtyTireTracks(vehicle)
 		end
 	end
 end
-function DirtyTireTracks:saveToXmlDirtyTireTracks(vehicle, active)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:saveToXmlWoodHarvesterTracks(vehicle, active)
+	local spec = self.spec_woodHarvesterTracks
 	
-	if DirtyTireTracks.configXml ~= nil then
-		setXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.showHelp", DirtyTireTracks.showHelp)
-		setXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.modActiveGlobal", DirtyTireTracks.modActive)
+	if WoodHarvesterTracks.configXml ~= nil then
+		setXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.showHelp", WoodHarvesterTracks.showHelp)
+		setXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.modActiveGlobal", WoodHarvesterTracks.modActive)
 		if vehicle ~= nil and active ~= nil then
-			local key = "DirtyTireTracksConfig.dttActiveVehicles"
+			local key = "WoodHarvesterTracksConfig.dttActiveVehicles"
 			local i = 0
 			while true do
-				local name = getXMLString(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name")
+				local name = getXMLString(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name")
 				if name ~= nil then
 					if name == vehicle then
-						setXMLString(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name", vehicle)
-						setXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i), active)
+						setXMLString(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name", vehicle)
+						setXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i), active)
 						break
 					end
 				else
-					setXMLString(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name", vehicle)
-					setXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i), active)
+					setXMLString(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name", vehicle)
+					setXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i), active)
 					break
 				end
 				i = i + 1
 				local name = key .. string.format(".vehicle(%d)", i)
-				if not hasXMLProperty(DirtyTireTracks.configXml, name) then
-					setXMLString(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name", vehicle)
-					setXMLBool(DirtyTireTracks.configXml, "DirtyTireTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i), active)
+				if not hasXMLProperty(WoodHarvesterTracks.configXml, name) then
+					setXMLString(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i).."#name", vehicle)
+					setXMLBool(WoodHarvesterTracks.configXml, "WoodHarvesterTracksConfig.dttActiveVehicles"..string.format(".vehicle(%d)", i), active)
 					break
 				end
 			end
 		end
-		saveXMLFile(DirtyTireTracks.configXml)
+		saveXMLFile(WoodHarvesterTracks.configXml)
 	end
 end
-function DirtyTireTracks:groundRaycastCallbackNew(hitObjectId, x, y, z, distance)
-    local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:groundRaycastCallbackNew(hitObjectId, x, y, z, distance)
+    local spec = self.spec_woodHarvesterTracks
 	
     spec.groundRaycastResult.y = y
     spec.groundRaycastResult.object = hitObjectId
     spec.groundRaycastResult.distance = distance
     return false
 end
-function DirtyTireTracks:onUpdate(dt)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:onUpdate(dt)
+	local spec = self.spec_woodHarvesterTracks
 	
 	if not spec.modInitialized then
 		return
 	end
 	
 	spec.infoText = ''
-	if self:getIsActive() and spec.modActive and DirtyTireTracks.modActive then
+	if self:getIsActive() and spec.modActive and WoodHarvesterTracks.modActive then
 		local anyActive = false
 		if self.spec_wheels.wheels ~= nil then
 			local isServer = self.isServer
@@ -343,50 +343,50 @@ function DirtyTireTracks:onUpdate(dt)
 		end
 		--spec.infoText = spec.infoText .. ' hasDtt - '..tostring(self:getHasDttImplement())..'\n'
 		--spec.infoText = spec.infoText .. ' modActive - '..tostring(spec.modActive)..'\n'
-		--spec.infoText = spec.infoText .. ' modActiveGlobal - '..tostring(DirtyTireTracks.modActive)..'\n'
+		--spec.infoText = spec.infoText .. ' modActiveGlobal - '..tostring(WoodHarvesterTracks.modActive)..'\n'
 		--renderText(0.7, 0.97, 0.015, spec.infoText)
 	end
 	if self.isClient then
 		if self:getIsActive() and (self:getIsActiveForInput() or not self:getHasDttImplement()) then
 			if spec.event_IDs ~= nil and g_dedicatedServerInfo == nil then
 				for actionName,eventID in pairs(spec.event_IDs) do
-					if actionName == InputAction.DIRTYTIRETRACK_ACTIVATE then
+					if actionName == InputAction.WOODHARVESTERTRACK_ACTIVATE then
 						g_inputBinding:setActionEventActive(eventID, g_currentMission.isMasterUser)
-						g_inputBinding:setActionEventText(eventID, spec.modActive and g_i18n:getText('DIRTYTIRETRACK_DEACTIVATE') or g_i18n:getText('DIRTYTIRETRACK_ACTIVATE'))
+						g_inputBinding:setActionEventText(eventID, spec.modActive and g_i18n:getText('WOODHARVESTERTRACK_DEACTIVATE') or g_i18n:getText('WOODHARVESTERTRACK_ACTIVATE'))
 					end
-					if actionName == InputAction.DIRTYTIRETRACK_ACTIVATE_ALL then
+					if actionName == InputAction.WOODHARVESTERTRACK_ACTIVATE_ALL then
 						g_inputBinding:setActionEventActive(eventID, g_currentMission.isMasterUser)
-						g_inputBinding:setActionEventText(eventID, DirtyTireTracks.modActive and g_i18n:getText('DIRTYTIRETRACK_DEACTIVATE_ALL') or g_i18n:getText('DIRTYTIRETRACK_ACTIVATE_ALL'))
+						g_inputBinding:setActionEventText(eventID, WoodHarvesterTracks.modActive and g_i18n:getText('WOODHARVESTERTRACK_DEACTIVATE_ALL') or g_i18n:getText('WOODHARVESTERTRACK_ACTIVATE_ALL'))
 					end
 				end
 			end
 		end
 	end
 end
-function DirtyTireTracks:actionCallback(actionName, keyStatus, arg4, arg5, arg6)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:actionCallback(actionName, keyStatus, arg4, arg5, arg6)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
 	
 	if keyStatus > 0 then
-		if actionName == 'DIRTYTIRETRACK_ACTIVATE' then
+		if actionName == 'WOODHARVESTERTRACK_ACTIVATE' then
 			if g_currentMission.isMasterUser then
-				if DirtyTireTracks.modActive == false then
-					g_currentMission:showBlinkingWarning("First activate Dirty Tire Tracks global (CTRL + T)")
+				if WoodHarvesterTracks.modActive == false then
+					g_currentMission:showBlinkingWarning("First activate Wood Harvester Tracks global (CTRL + T)")
 				else
 					self:activateDttMod(not spec.modActive, 'THIS')
 				end
 			end
-		elseif actionName == 'DIRTYTIRETRACK_ACTIVATE_ALL' then
+		elseif actionName == 'WOODHARVESTERTRACK_ACTIVATE_ALL' then
 			if g_currentMission.isMasterUser then
-				self:activateDttMod(not DirtyTireTracks.modActive, 'ALL')
+				self:activateDttMod(not WoodHarvesterTracks.modActive, 'ALL')
 			end
 		end
 	end
 end
-function DirtyTireTracks:activateDttMod(status, mode)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:activateDttMod(status, mode)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
@@ -398,15 +398,15 @@ function DirtyTireTracks:activateDttMod(status, mode)
 	if not status then
 		text = 'DEACTIVATED'
 	end
-	g_currentMission:showBlinkingWarning("Dirty Tire Tracks function "..tostring(text).." for "..tostring(mode).." vehicle", 2000)
+	g_currentMission:showBlinkingWarning("Wood Harvester Tracks function "..tostring(text).." for "..tostring(mode).." vehicle", 2000)
 	if mode == 'ALL' then
-		self:toggleActiveDirtyTireTracks(spec.modActive, status, false)
+		self:toggleActiveWoodHarvesterTracks(spec.modActive, status, false)
 	else
-		self:toggleActiveDirtyTireTracks(status, DirtyTireTracks.modActive, false)
+		self:toggleActiveWoodHarvesterTracks(status, WoodHarvesterTracks.modActive, false)
 	end
 end
-function DirtyTireTracks:toggleActiveDirtyTireTracks(modActive, modActiveGlobal, noEventSend)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:toggleActiveWoodHarvesterTracks(modActive, modActiveGlobal, noEventSend)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
@@ -414,21 +414,21 @@ function DirtyTireTracks:toggleActiveDirtyTireTracks(modActive, modActiveGlobal,
 	if self.isServer or g_currentMission.isMasterUser then
 		if spec.modActive ~= modActive then
 			spec.modActive = modActive
-			DirtyTireTracks.modActive = modActiveGlobal
-			self:saveToXmlDirtyTireTracks(self:getFullName(), modActive)
-		elseif DirtyTireTracks.modActive ~= modActiveGlobal then
+			WoodHarvesterTracks.modActive = modActiveGlobal
+			self:saveToXmlWoodHarvesterTracks(self:getFullName(), modActive)
+		elseif WoodHarvesterTracks.modActive ~= modActiveGlobal then
 			spec.modActive = modActive
-			DirtyTireTracks.modActive = modActiveGlobal
-			self:saveToXmlDirtyTireTracks()
+			WoodHarvesterTracks.modActive = modActiveGlobal
+			self:saveToXmlWoodHarvesterTracks()
 		end
 	end
 	spec.modActive = modActive
-	DirtyTireTracks.modActive = modActiveGlobal
+	WoodHarvesterTracks.modActive = modActiveGlobal
 	
-	DirtyTireTracksToggleActiveEvent.sendEvent(self, modActive, modActiveGlobal, noEventSend)
+	WoodHarvesterTracksToggleActiveEvent.sendEvent(self, modActive, modActiveGlobal, noEventSend)
 end
-function DirtyTireTracks:getHasDttImplement()
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:getHasDttImplement()
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
@@ -436,15 +436,15 @@ function DirtyTireTracks:getHasDttImplement()
 	local hasDtt = false
 	if self.spec_attacherJoints ~= nil and self.spec_attacherJoints.attachedImplements ~= nil then
 		for i,implement in pairs(self.spec_attacherJoints.attachedImplements) do
-			if implement.object.spec_dirtyTireTracks ~= nil and implement.object.spec_dirtyTireTracks.modAllowed then
+			if implement.object.spec_woodHarvesterTracks ~= nil and implement.object.spec_woodHarvesterTracks.modAllowed then
 				hasDtt = true
 			end
 		end
 	end
 	return hasDtt
 end
-function DirtyTireTracks:onReadStream(streamId, connection)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:onReadStream(streamId, connection)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
@@ -452,66 +452,66 @@ function DirtyTireTracks:onReadStream(streamId, connection)
     local modActive = streamReadBool(streamId)
     local modActiveGlobal = streamReadBool(streamId)
 	if modActive ~= nil and modActiveGlobal ~= nil then
-		self:toggleActiveDirtyTireTracks(modActive, modActiveGlobal, true)
+		self:toggleActiveWoodHarvesterTracks(modActive, modActiveGlobal, true)
 	end
 end
-function DirtyTireTracks:onWriteStream(streamId, connection)
-	local spec = self.spec_dirtyTireTracks
+function WoodHarvesterTracks:onWriteStream(streamId, connection)
+	local spec = self.spec_woodHarvesterTracks
 	if not spec.modInitialized then
 		return
 	end
 	
     streamWriteBool(streamId, spec.modActive)
-    streamWriteBool(streamId, DirtyTireTracks.modActive)
+    streamWriteBool(streamId, WoodHarvesterTracks.modActive)
 end
 
-DirtyTireTracksToggleActiveEvent = {}
-DirtyTireTracksToggleActiveEvent_mt = Class(DirtyTireTracksToggleActiveEvent, Event)
+WoodHarvesterTracksToggleActiveEvent = {}
+WoodHarvesterTracksToggleActiveEvent_mt = Class(WoodHarvesterTracksToggleActiveEvent, Event)
 
-InitEventClass(DirtyTireTracksToggleActiveEvent, "DirtyTireTracksToggleActiveEvent")
+InitEventClass(WoodHarvesterTracksToggleActiveEvent, "WoodHarvesterTracksToggleActiveEvent")
 
-function DirtyTireTracksToggleActiveEvent.emptyNew()
-    local self = Event.new(DirtyTireTracksToggleActiveEvent_mt)
-    self.className="DirtyTireTracksToggleActiveEvent"
+function WoodHarvesterTracksToggleActiveEvent.emptyNew()
+    local self = Event.new(WoodHarvesterTracksToggleActiveEvent_mt)
+    self.className="WoodHarvesterTracksToggleActiveEvent"
     return self
 end
 
-function DirtyTireTracksToggleActiveEvent.new(object, modActive, modActiveGlobal)
-	local self = DirtyTireTracksToggleActiveEvent.emptyNew()
+function WoodHarvesterTracksToggleActiveEvent.new(object, modActive, modActiveGlobal)
+	local self = WoodHarvesterTracksToggleActiveEvent.emptyNew()
 	self.object = object
 	self.modActive = modActive
 	self.modActiveGlobal = modActiveGlobal
 	return self
 end
 
-function DirtyTireTracksToggleActiveEvent:readStream(streamId, connection)
+function WoodHarvesterTracksToggleActiveEvent:readStream(streamId, connection)
 	self.object = NetworkUtil.readNodeObject(streamId)
     self.modActive = streamReadBool(streamId)
     self.modActiveGlobal = streamReadBool(streamId)
     self:run(connection)
 end
 
-function DirtyTireTracksToggleActiveEvent:writeStream(streamId, connection)
+function WoodHarvesterTracksToggleActiveEvent:writeStream(streamId, connection)
 	NetworkUtil.writeNodeObject(streamId, self.object)
 	streamWriteBool(streamId, self.modActive)
 	streamWriteBool(streamId, self.modActiveGlobal)
 end
 
-function DirtyTireTracksToggleActiveEvent:run(connection)
+function WoodHarvesterTracksToggleActiveEvent:run(connection)
 	if self.object ~= nil then
-		self.object:toggleActiveDirtyTireTracks(self.modActive, self.modActiveGlobal, true)
+		self.object:toggleActiveWoodHarvesterTracks(self.modActive, self.modActiveGlobal, true)
 	end
 	if not connection:getIsServer() then
-		g_server:broadcastEvent(DirtyTireTracksToggleActiveEvent.new(self.object, self.modActive, self.modActiveGlobal), nil, connection, self.object)
+		g_server:broadcastEvent(WoodHarvesterTracksToggleActiveEvent.new(self.object, self.modActive, self.modActiveGlobal), nil, connection, self.object)
 	end
 end
 
-function DirtyTireTracksToggleActiveEvent.sendEvent(vehicle, modActive, modActiveGlobal, noEventSend)
+function WoodHarvesterTracksToggleActiveEvent.sendEvent(vehicle, modActive, modActiveGlobal, noEventSend)
 	if noEventSend == nil or noEventSend == false then
 		if g_server ~= nil then
-			g_server:broadcastEvent(DirtyTireTracksToggleActiveEvent.new(vehicle, modActive, modActiveGlobal), nil, nil, vehicle)
+			g_server:broadcastEvent(WoodHarvesterTracksToggleActiveEvent.new(vehicle, modActive, modActiveGlobal), nil, nil, vehicle)
 		else
-			g_client:getServerConnection():sendEvent(DirtyTireTracksToggleActiveEvent.new(vehicle, modActive, modActiveGlobal))
+			g_client:getServerConnection():sendEvent(WoodHarvesterTracksToggleActiveEvent.new(vehicle, modActive, modActiveGlobal))
 		end
 	end
 end
