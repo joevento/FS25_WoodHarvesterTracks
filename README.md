@@ -1,5 +1,5 @@
 # Wood Harvester Tracks Mod
-<i>Current version 1.0.3.0</i>
+<i>Current version 1.0.3.1</i>
 
 This mod adds extra tyre tracks to vehicles for more realistic behaviour in forested areas. It was originally created for heavy tracked machines, but the functionality has been extended to all wheeled and tracked vehicles.
 
